@@ -139,7 +139,7 @@ The pipeline of XGBoost is shown in Figure ~\ref{fig:xgboost}. The difference is
 \caption{Hyperparameters} 
 \begin{tabular}{ c c c }
  \textbf{Model} & \textbf{Hyperparameter} & \textbf{values} \\ 
- Random Forest & max\_depth, num\_estimators & 5 logscaled number[1, 1000],5 integers between [1,5] \\  
+ Random Forest & max\_depth, min\_split & 5 logscaled number[2, 1000],5 integers between [2,100] \\  
  Logistic Regression & alpha & 5 logscaled number[0.01, 100]\\
  XGBoost & alpha & 5 logscaled number[0.01, 100]
 \end{tabular}
@@ -149,7 +149,14 @@ The pipeline of XGBoost is shown in Figure ~\ref{fig:xgboost}. The difference is
 \section*{Results}
 The baseline accuracy of the model is 0.34 for the portion of N2 sleep. We compared the performance of the three models in Table ~\ref{tab:result} below. The highest accuracy was obtained by random forest. However, XGBoost is more reasonable with regard to missing value. Moreover, all of the models have accuracy way above the baseline and there is no significant difference between these models. The best model in this regard would be XGBoost. \\
 \\
-Therefore, our model would be XGBoost model. We calcualted feature importance by performing permutation tests on each of the features using the best model we obtained with hyperparameter alpha equals to 1. The result is shown in Figure ~\ref{fig:permutation}. \\
+Therefore, our model would be XGBoost model. First of all, we calculated and plotted the confution matrix in Figure ~\ref{fig:confusion}. We can see that Wakefulness, N2 and N3 are best characterized by the algorithm with high accuracy.\\
+\begin{figure}[ht]
+  \includegraphics[width=0.9\textwidth]{confusion_matrix}
+  \caption{Confusion Matrix}
+  \label{fig:confusion}
+\end{figure} 
+\\
+We calcualted feature importance by performing permutation tests on each of the features using the best model we obtained with hyperparameter alpha equals to 1. The result is shown in Figure ~\ref{fig:permutation}. \\
 \\
 The most important features are slow wave and sigma. This makes sense in the academic setting as slow wave is characteristic of N3 sleep and sigma is characterized of N2 sleep. Moreover, these two stages constittute of around 60\% of the datapoint. alpha and theta are less important as alpha and theta are equal likely in N1 and REM sleep. Channel number are least important as for different stages and components, it's rather homogeneous across different channels of the EEG recording device.\\  
 
@@ -164,15 +171,15 @@ The most important features are slow wave and sigma. This makes sense in the aca
 \caption{Results of Different Models} 
 \begin{tabular}{ c c c }
  \textbf{Model} & \textbf{Mean Accuracy} & \textbf{Standard Deviation (+/-)} \\ 
- Random Forest & 0.63 & 0.06 \\  
- Logistic Regression & 0.67 & 0.04\\
+ Logistic Regression & 0.63 & 0.06 \\  
+ Random Forest & 0.66 & 0.05\\
  XGBoost & 0.64 & 0.06
 \end{tabular}
 \label{tab:result} 
 \end{table}
 
 \section*{Outlook}
-Although the current exceeds the baseline accuracy of the model, it's still not appropriate for applications in academic setting. According to the feature importance result, the model might be useful for determining NREM(N2+ N3) versus other stages rather than characterizing all of the sleep stages. One feature that distinguish REM and N1 sleep is the amplitude of muscle tone which is close to zero during REM. The current data does not include the muscle tone data. For better results, muscle tone data might provide extra information to distinguish between REM and other sleep stages. Furthermore, there is another possibility that the problem might be innately hard for the machine learning algorithms we discussed here. To obtain a better accuracy, a more complexed model like Neural Networks might be necessary. In that case, we can not only use the transformed tabular format data, but also the original epochs in time domain. More information and more complexed models might improve the accuracy of classifying of human sleeps automatically. This would potentially be beneficial not only to the academic setting but also to empirical usage such as sleep tracking devices. (1195/2000 words)
+Although the current exceeds the baseline accuracy of the model, it's still not appropriate for applications in academic setting. According to the feature importance result, the model might be useful for determining Wake versu NREM(N2+ N3) or NREM versus other stages rather than characterizing all of the sleep stages. One feature that distinguish REM and N1 sleep is the amplitude of muscle tone which is close to zero during REM. The current data does not include the muscle tone data. For better results, muscle tone data might provide extra information to distinguish between REM and other sleep stages. N1 might be innately hard to distinguish as it is a transition stage between wakefulness and N2. Morevoer N1 is characterized by slow eye movements whose data is also not included in the current dataset. Furthermore, there is another possibility that the problem might be innately hard for the machine learning algorithms we discussed here. To obtain a better accuracy, a more complexed model like Neural Networks might be necessary. In that case, we can not only use the transformed tabular format data, but also the original epochs in time domain. More information and more complexed models might improve the accuracy of classifying of human sleeps automatically. This would potentially be beneficial not only to the academic setting but also to empirical usage such as sleep tracking devices. (1195/2000 words)
 \\
 
 \textbf {Github} \\ 
